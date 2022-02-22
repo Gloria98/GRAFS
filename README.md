@@ -5,7 +5,7 @@ GRAFS needs three components to run, a solr search engine, a front-end, and a ba
 
 ## Step 1: Download this repo or clone it using
 ```
-$ git clone 
+$ git clone https://github.com/Gloria98/GRAFS.git
 $ cd GRAFS
 ```
 
