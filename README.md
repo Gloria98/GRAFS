@@ -3,6 +3,9 @@
 ## Overview
 GRAFS needs three components to run, a solr search engine, a front-end, and a back-end. TODO: include a graph to show the connection btw them
 
+![grafs_structure2](https://user-images.githubusercontent.com/38746205/155271227-0eb6f7c8-5594-43f3-b49b-e90ce18bc053.png)
+
+
 ## Step 1: Download this repo or clone it using
 ```
 $ git clone https://github.com/Gloria98/GRAFS.git
