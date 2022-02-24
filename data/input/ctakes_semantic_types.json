@@ -1,0 +1,70 @@
+{
+    "AnatomicalSiteMention": 
+    [
+      "ANAT|Anatomy|T017|Anatomical Structure"
+     ,"ANAT|Anatomy|T029|Body Location or Region"
+     ,"ANAT|Anatomy|T023|Body Part, Organ, or Organ Component"
+     ,"ANAT|Anatomy|T030|Body Space or Junction"
+     ,"ANAT|Anatomy|T031|Body Substance"
+     ,"ANAT|Anatomy|T022|Body System"
+     ,"ANAT|Anatomy|T025|Cell"
+     ,"ANAT|Anatomy|T026|Cell Component"
+     ,"ANAT|Anatomy|T018|Embryonic Structure"
+     ,"ANAT|Anatomy|T021|Fully Formed Anatomical Structure"
+     ,"ANAT|Anatomy|T024|Tissue"
+    ]
+    ,"DiseaseDisorderMention":
+    [
+     "DISO|Disorders|T020|Acquired Abnormality"
+     ,"DISO|Disorders|T190|Anatomical Abnormality"
+     ,"DISO|Disorders|T049|Cell or Molecular Dysfunction"
+     ,"DISO|Disorders|T019|Congenital Abnormality"
+     ,"DISO|Disorders|T047|Disease or Syndrome"
+     ,"DISO|Disorders|T050|Experimental Model of Disease"
+     ,"DISO|Disorders|T033|Finding"
+     ,"DISO|Disorders|T037|Injury or Poisoning"
+     ,"DISO|Disorders|T048|Mental or Behavioral Dysfunction"
+     ,"DISO|Disorders|T191|Neoplastic Process"
+     ,"DISO|Disorders|T046|Pathologic Function"
+    ]
+    ,"SignSymptomMention":
+    [
+     "DISO|Disorders|T184|Sign or Symptom"
+    ]
+    ,"ProcedureMention":
+    [
+     "PROC|Procedures|T060|Diagnostic Procedure"
+     ,"PROC|Procedures|T065|Educational Activity"
+     ,"PROC|Procedures|T058|Health Care Activity"
+     ,"PROC|Procedures|T063|Molecular Biology Research Technique"
+     ,"PROC|Procedures|T062|Research Activity"
+     ,"PROC|Procedures|T061|Therapeutic or Preventive Procedure"
+    ]
+    ,"LabMention":
+    [
+     "PROC|Procedures|T059|Laboratory Procedure"
+    ]
+    ,"MedicationMention":
+    [
+     "CHEM|Chemicals & Drugs|T116|Amino Acid, Peptide, or Protein"
+     ,"CHEM|Chemicals & Drugs|T195|Antibiotic"
+     ,"CHEM|Chemicals & Drugs|T123|Biologically Active Substance"
+     ,"CHEM|Chemicals & Drugs|T122|Biomedical or Dental Material"
+     ,"CHEM|Chemicals & Drugs|T103|Chemical"
+     ,"CHEM|Chemicals & Drugs|T120|Chemical Viewed Functionally"
+     ,"CHEM|Chemicals & Drugs|T104|Chemical Viewed Structurally"
+     ,"CHEM|Chemicals & Drugs|T200|Clinical Drug"
+     ,"CHEM|Chemicals & Drugs|T196|Element, Ion, or Isotope"
+     ,"CHEM|Chemicals & Drugs|T126|Enzyme"
+     ,"CHEM|Chemicals & Drugs|T131|Hazardous or Poisonous Substance"
+     ,"CHEM|Chemicals & Drugs|T125|Hormone"
+     ,"CHEM|Chemicals & Drugs|T129|Immunologic Factor"
+     ,"CHEM|Chemicals & Drugs|T130|Indicator, Reagent, or Diagnostic Aid"
+     ,"CHEM|Chemicals & Drugs|T197|Inorganic Chemical"
+     ,"CHEM|Chemicals & Drugs|T114|Nucleic Acid, Nucleoside, or Nucleotide"
+     ,"CHEM|Chemicals & Drugs|T109|Organic Chemical"
+     ,"CHEM|Chemicals & Drugs|T121|Pharmacologic Substance"
+     ,"CHEM|Chemicals & Drugs|T192|Receptor"
+     ,"CHEM|Chemicals & Drugs|T127|Vitamin"
+    ]
+}
