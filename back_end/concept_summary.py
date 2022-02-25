@@ -13,7 +13,6 @@ import json
 def generate_summary(query, docids, concept, all_docs, num_sentence, snomed=True):
     stemmer = PorterStemmer()
     docids.sort()
-    # print(docids)
     docids = docids[:min(100, len(docids))]
     all_title_cand, all_abs_cand = extract_sent_candids(docids, concept, all_docs, snomed)
     all_title_text = [cand['sent'] for cand in all_title_cand]
@@ -28,11 +27,9 @@ def generate_summary(query, docids, concept, all_docs, num_sentence, snomed=True
         raw_text.append(' '.join(words))
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(raw_text)
-    # print(len(vectorizer.vocabulary_))
     query = X[0, :].reshape((1, -1))
     cand = X[1:, :]
     sim = cosine_similarity(query, cand)
-    # print(sim.shape)
     sim_mat = -np.ones((len(all_cand), len(all_cand)), dtype=np.float)
     for i in range(len(all_cand)):
         sim_mat[i, i] = sim[0, i]
@@ -44,7 +41,6 @@ def generate_summary(query, docids, concept, all_docs, num_sentence, snomed=True
     summary = []
     for sent_id in selected_sentence:
         summary.append(all_cand[sent_id])
-    # print(summary)
     return summary
 
 def select_sentence(cand, selected_sentence, sim_mat, l):
@@ -73,7 +69,6 @@ def select_sentence(cand, selected_sentence, sim_mat, l):
             if score > best_score:
                 best_score = score
                 best_sent = i
-                # print(i, best_score)
         return best_sent
 
 def extract_sent_candids(docids, concept, all_docs, snomed):
@@ -90,8 +85,6 @@ def extract_sent_candids(docids, concept, all_docs, snomed):
         all_title_cand += title_cand
         abstract = doc['abstract'][0]
         abstract_sent = abstract_split(abstract, json.loads(doc['abstract_sen']))
-        # if i < 2:
-        #     print(abstract_sent)
         if snomed:
             abstract_cand = find_candidates(abstract_sent, concept, doc['abstract_spans'])
         else:
@@ -140,9 +133,3 @@ def find_candidates(sent_list, target_concept_id, concepts_spans):
         if len(sent['c_span']) > 0:
             sent_cands.append(sent)
     return sent_cands
-
-# content = "The recent outbreak of coronavirus disease (COVID-19) globally threatens the public health. COVID-19 is a pneumonia caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2), previously known as the 2019 novel coronavirus (2019-nCoV). Typical symptoms of COVID-19 include fever, cough and fatigue. As a novel disease, there are still many unsolved questions regarding COVID-19. Nevertheless, genetic analysis has demonstrated that the virus is strongly associated with certain SARS-like coronavirus originated from bats. The COVID-19 outbreak started in a seafood wholesale market in Wuhan, China, but the exact origin of the virus is still highly debatable. Since there is currently no registered antiviral drug for the disease, symptomatic treatments have been applied routinely to manage COVID-19 cases. However, various drugs and vaccines have been currently under research. This review aims to consolidate and discuss the likely origins and genetic features of SARS-CoV-2 as well as the recent clinical findings and potential effective treatments of COVID-19. Keywords: COVID-19; SARS-CoV-2; 2019-nCoV; SARS; coronavirus."    
-# t1 = time.time()
-# split_and_span(content)
-# t2 = time.time()
-# print(t2 -t1)

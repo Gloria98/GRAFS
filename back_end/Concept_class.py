@@ -17,13 +17,6 @@ class Concept_global(object):
         }
         return json_out
       
-# def concept2dic(concepts,json):
-#     for cui,concept in concepts.items():
-#         json[cui]={}
-#         json[cui]['mentions']=list(concept.mentions)
-#         json[cui]['pmids']=list(concept.pmids)
-      
-#     return json
 
 class Concept_cluster(object):
     def __init__(self):

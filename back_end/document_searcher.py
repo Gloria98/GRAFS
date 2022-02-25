@@ -14,26 +14,16 @@ def solr_document_searcher(query_string, local, num_docs):
         SOLR_URL_PREFIX = SOLR_URL_PREFIX_LOCAL
     else:
         SOLR_URL_PREFIX = SOLR_URL_PREFIX_SERVER
-    #clustering.engine=kmeans
-    #'LingoClusteringAlgorithm.desiredClusterCountBase': '10'
+
     payload = {'q': query_string, 'start': '0', 'rows': num_docs,"facet.field":"snomed_codes","facet":"off"}
-    # payload = {'q': query_string, 'start': '0', 'rows': '100',"facet.field":"snomed_codes","facet":"on", 
-    #             'LingoClusteringAlgorithm.desiredClusterCountBase': 10, "carrot.snippet": "abstract", "carrot.title": "title"}
     r = requests.get(SOLR_URL_PREFIX, params=payload)
-    print(payload)
     search_result = r.json()
-    '''
-    assert 'response' in search_result, \
-        'search_result_parser: no "response" key in search_result object'
-    '''
+
     if 'response' not in search_result:
         print(search_result)
-        with open('./log.json', 'w') as f:
-            json.dump(search_result, f)
+        
     else:
     # preprocess certain non-ascii strings
-        with open('./log.json', 'w') as f:
-            json.dump(search_result, f)
         response = search_result['response']
         for i in range(len(response['docs'])):
             if 'abstract' in response['docs'][i]:

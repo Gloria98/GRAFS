@@ -17,34 +17,8 @@ import re
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import json
-'''
-from query_expansion import create_synonyms
-from query_expansion import create_negtive_string
-from query_expansion import create_positive_string
-def solr_query_builder(info_focus_dict):
-    query_parts = []
-    key_terms=[]
-    for concept in info_focus_dict['event']:
-        # print (concept)
-        term = concept['name']
-        weight = float(concept['importance'])
 
-        synonyms=create_synonyms(term)
-        for syn in synonyms:
-            key_terms.append(syn)
-        key_terms.append(term)
 
-        if (weight==0):
-            neg_syn_string=create_negtive_string(term,synonyms)
-            query_parts.append(neg_syn_string)
-        else:
-            pos_syn_string=create_positive_string(term,synonyms,weight)
-            query_parts.append(pos_syn_string)
- 
-    query_string = ' AND '.join(query_parts)
-
-    return query_string,set(key_terms)
-'''
 def load_stopwords():
     stopword=set()
     with open('./stopwords.txt') as f:
@@ -58,15 +32,6 @@ def load_stopwords():
 def solr_query_builder(info_focus_dict):
     
     porter = PorterStemmer()
-    '''
-    with open('./stp.txt', 'w') as f:
-        for w in selfdefined_stopwords:
-            f.write(w)
-            f.write('\n')
-            
-    with open('./foucs.json', 'w') as f:
-        json.dump(info_focus_dict, f)   
-        '''
     query_parts = []
     key_terms=[]
     pattern = re.compile(r'(?:\d|[a-zA-Z])\.\s([a-zA-Z].*)')
@@ -82,10 +47,7 @@ def solr_query_builder(info_focus_dict):
             minimals=part.split(" ")
             for minimal in minimals:
                 add_to_query_dic(query_dic,minimal,weight,stopwords)
-    '''      
-    with open('./query.json', 'w') as f:
-        json.dump(query_dic, f)    
-    '''     
+                   
     for key, value in query_dic.items():
         query_parts.append('abstract:'+key+ '^' + str(value))
         query_parts.append('title:' + key+ '^' + str(value))
@@ -93,7 +55,6 @@ def solr_query_builder(info_focus_dict):
  
     query_string = ' '.join(query_parts)
     free_text_query = ' '.join(key_terms)
-    # print(query_string)
 
     return query_string,free_text_query
 

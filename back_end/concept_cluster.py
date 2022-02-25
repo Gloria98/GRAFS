@@ -10,7 +10,7 @@ concepts is a dict with cui: concept object as defined in text_parser.py
     self.clusters = set()
     self.docids = set([docids])
 '''
-
+# list of concepts that are excluded from selection because they are too common in medical publications
 stop_list = ["C0332875", "C3539106", "C1446409", "C0205160", "C0185115", "C0700287", "C1273869", "C1299583"]
 
 def concept_clustering(concepts, num_clusters, top_k_docs):
@@ -21,16 +21,14 @@ def concept_clustering(concepts, num_clusters, top_k_docs):
     cooccur_mat = -np.ones((len(cui_list), len(cui_list)), dtype=np.int)
     for i in range(len(cui_list)):
         cooccur_mat[i, i] = len(concepts[cui_list[i]].docids)
-        # for j in range(i, len(cui_list)):
-        #     cooccur_mat[i, j] = len(concepts[cui_list[i]].docids.intersection(concepts[cui_list[j]].docids))
-        #     cooccur_mat[j, i] = len(concepts[cui_list[i]].docids.intersection(concepts[cui_list[j]].docids))
+    
     l = 0.5
     selected_concept = []
     while len(selected_concept) < num_clusters:
         new_concept_id = select_concept(concepts, cui_list, selected_concept, cooccur_mat, l, top_k_docs)
         selected_concept.append(new_concept_id)
     clusters = []
-    print(selected_concept)
+    
     for c in selected_concept:
         c_object = concepts[cui_list[c]]
         labels = []
@@ -52,7 +50,6 @@ def concept_clustering(concepts, num_clusters, top_k_docs):
 def select_concept(concepts, cui_list, selected_concept, cooccur_mat, l, top_k_docs):
     best_concept = 0
     best_score = np.NINF
-    # print(selected_concept)
     for i in range(cooccur_mat.shape[0]):
         if i in selected_concept:
             continue
@@ -60,7 +57,6 @@ def select_concept(concepts, cui_list, selected_concept, cooccur_mat, l, top_k_d
         if df > top_k_docs/2:
             continue
         sim = [0]
-        #[max(0, len(selected_concept)-5):]
         for c in selected_concept:
             if cooccur_mat[c, i] == -1:
                 intersection = len(concepts[cui_list[i]].docids.intersection(concepts[cui_list[c]].docids))
@@ -68,14 +64,10 @@ def select_concept(concepts, cui_list, selected_concept, cooccur_mat, l, top_k_d
                 cooccur_mat[i, c] = intersection
             sim.append(cooccur_mat[i, c])
         max_sim = np.amax(sim)
-        # if i < 30:
-        #     # print(df, max_sim)
-        #     print(np.where(np.array(sim)==max_sim))
         score = l * df - (1 - l) * max_sim
         if score > best_score:
             best_score = score
             best_concept = i
-            # print(i, best_score)
     return best_concept
 
 def edit_cluster(current_clusters, concepts, must_exclude, top_k_docs):
@@ -90,9 +82,7 @@ def edit_cluster(current_clusters, concepts, must_exclude, top_k_docs):
             selected_concept.append(cui_list.index(cluster['cid']))
     for i in range(len(cui_list)):
         cooccur_mat[i, i] = len(concepts[cui_list[i]].docids)
-        # for j in range(i, len(cui_list)):
-        #     cooccur_mat[i, j] = len(concepts[cui_list[i]].docids.intersection(concepts[cui_list[j]].docids))
-        #     cooccur_mat[j, i] = len(concepts[cui_list[i]].docids.intersection(concepts[cui_list[j]].docids))
+        
     l = 0.5
     new_concept_id = select_concept(concepts, cui_list, selected_concept, cooccur_mat, l, top_k_docs)
     selected_concept.append(new_concept_id)

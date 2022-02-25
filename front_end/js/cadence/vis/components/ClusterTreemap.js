@@ -191,7 +191,9 @@ define([
                 })
                 .on("contextmenu", function(d, index) {
                     d3.event.preventDefault();
-                    self.context_menu.style('left', d3.event.pageX).style('top', d3.event.pageY).classed('visible',true);
+                    // .style('left', d3.event.pageX).style('top', d3.event.pageY)
+                    self.context_menu.classed('visible',true).style('left', d3.event.pageX + "px").style('top', d3.event.pageY + "px");
+                    console.log(d3.event.pageX, d3.event.pageY);
                     self.context_menu.selectAll('div').on('click', function(_d) {
                         if (d3.select(this).text()==='Delete'){
                             let cid = self.clusters[d.data.node_id]['cid'];

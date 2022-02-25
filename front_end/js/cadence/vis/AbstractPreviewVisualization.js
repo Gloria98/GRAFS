@@ -57,31 +57,26 @@ define([
             this.v_baseline = false;
             this.action_records = [{"type": "begin"}];
             this.user_id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+            // Put additional search queries here
             this.advanced_queries = [
-                {"title": "Vitamin supplementation in pregnancy",
-                "query": '((abstract:pregnan* AND (abstract:vitam* OR abstract:tocopherol* OR abstract:alpha‐tocopherol*)) ' +
-                    'AND (abstract:random* OR abstract:controlled‐clinical‐trial)) OR ((title:pregnan* AND (title:vitam* ' +
-                    'OR title:tocopherol* OR title:alpha‐tocopherol*)) AND (title:random* OR title:controlled‐clinical‐trial))',
-                "free_text": "pregnan* vitam* tocopherol* alpha‐tocopherol* random* controlled‐clinical‐trial",
-                "Question": "Find out what kind of intervention are used during clinical trials to study the effects of vitamin C."},
                 {
-                    "title": "COVID-19 Diagnosis",
+                    "title": "COVID-19",
                     "query": '((abstract:"COVID-19" OR abstract:"COVID-19 Vaccines" OR abstract:"COVID-19 serotherapy" ' +
                         'OR abstract:"COVID-19 Nucleic Acid Testing" OR abstract:"COVID-19 Serological Testing" ' +
                         'OR abstract:"COVID-19 Testing" OR abstract:"SARS-CoV-2" OR abstract:"Severe Acute Respiratory Syndrome Coronavirus 2" ' +
                         'OR abstract:"NCOV" OR abstract:"2019 NCOV" OR ((abstract:"coronavirus" OR abstract:"COV") ' +
-                        'AND date:[2019-11-01T00:00:00Z TO 3000-01-01T00:00:00Z])) AND (abstract:"diagnos*" OR abstract:"detect*")) ' +
+                        'AND date:[2019-11-01T00:00:00Z TO 3000-01-01T00:00:00Z])) ) ' +
                         'OR ((title:"COVID-19" OR title:"COVID-19 Vaccines" OR title:"COVID-19 serotherapy" OR title:"COVID-19 Nucleic Acid Testing" ' +
                         'OR title:"COVID-19 Serological Testing" OR title:"COVID-19 Testing" OR title:"SARS-CoV-2" ' +
                         'OR title:"Severe Acute Respiratory Syndrome Coronavirus 2" OR title:"NCOV" OR title:"2019 NCOV" ' +
                         'OR ((title:"coronavirus" OR title:"COV") AND date:[2019-11-01T00:00:00Z TO 3000-01-01T00:00:00Z])) ' +
-                        'AND (title:"diagnos*" OR title:"detect*"))',
+                        ')',
                     "free_text": "COVID-19 COVID-19 Vaccines COVID-19 serotherapy COVID-19 Nucleic Acid Testing COVID-19 Serological Testing" +
-                        "COVID-19 Testing 2019 NCOV coronavirus COV diagnos detect"
+                        "COVID-19 Testing 2019 NCOV coronavirus COV"
                 },
                 {
                     "title": 'Treatments for Depression',
-                    "query": '(heading_term:“Depression” OR heading_term:“Depressive Disorder”) AND ((heading_term:"clinical trials as topic" ' +
+                    "query": '((heading_term:"clinical trials as topic" ' +
                         'OR abstract:"clinical trials" OR title:"clinical trials") OR (heading_term:"clinical trials as topic" OR abstract:"clinical trial" ' +
                         'OR title:"clinical trial") OR (heading_term:"randomized controlled trials as topic" OR abstract:"randomized controlled trial" ' +
                         'OR abstract:"randomised controlled trial" OR title:"randomized controlled trial" OR title:"randomised controlled trial") ' +
@@ -93,14 +88,8 @@ define([
                 },
             ]
 
-            // this.color_theme_list = ["LightSkyBlue", "LightGreen", "LightSalmon", "BlueViolet", "Aquamarine", "RosyBrown",
-            //     "SandyBrown", "Plum", "CornflowerBlue", "Olive", "Brown", "CadetBlue",
-            //     "BurlyWood", "Chartreuse", "Crimson", "Cyan", "DarkBlue","DarkCyan",
-            //     "DarkGoldenRod", "DarkGreen", "DarkMagenta", "DarkOrange", "DarkRed", "DarkSeaGreen",
-            //     "DarkSlateBlue", "FireBrick", "GoldenRod", "Khaki","LightGrey"];
             this.color_theme_list = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#b667b8','#b15928','#BDB76B',
                 '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#bc80bd','#b15928'];
-            //this.host = "10.4.80.108";
             this.host = "0.0.0.0"
             container.innerHTML =
                 "<div style='height: 100%; margin-left: 5px; display: flex; flex-direction: column'>" +
@@ -110,17 +99,10 @@ define([
                 "<button id='hide_optional' data-dojo-type='dijit/form/Button' style='background-color: #0d8cf1' type='button'>Hide Options</button>" +
                 "<div class='optional'>" +
                 "<div><label class='switch'><input type='checkbox' checked><span class='slider round'></span></label></div>"+
-                // "<div id='algorithm'>Algorithm: </div>"+
                 "<div><label>User ID: <input type='text' id='user_id' value=0></label>" +
                 "<button id='start_end' style='background-color: #DC143C;'>Start!</button></div>" +
                 "<div><label>Number of Concepts: <input type='text' id='num_clusters' value=20></label></div>"+
                 "<div><label>Number of Documents: <input type='text' id='num_docs' value=1000></label></div>"+
-                // "<div id='cluster_concept_type'>" +
-                // "<p>Organize using:</p>" +
-                // "<input type='radio' id='snomed' name='concept_type' value='snomed' checked> <label for='snomed'>SNOMED</label><br>"+
-                // "<input type='radio' id='autophrase' name='concept_type' value='autophrase'> <label for='autophrase'>AutoPhrase</label><br>"+
-                // "<input type='radio' id='ap_lingo' name='concept_type' value='ap_lingo'> <label for='ap_lingo'>AP_Lingo</label><br>"+
-                // "</div>"+
                 "<div id='" + this.adv_query_id + "' style='margin: 10px;'><h3>Advanced Queries</h3></div>" +
                 "</div></div>"+
                 "<div style='display: table; background-color: #F8F9FA; border: 1px solid; border-color: #DCDDDE; padding: 10px'>" +
@@ -130,8 +112,6 @@ define([
                 "<div id ='" + this.cluster_view_id + "'></div>" +
                 "</div>" +
                 "<div id = 'right_column' style='float: left; width: 70%; border-radius: 5px; padding: 10px'>" +
-                // "<div style='flex: 70%; float: left;padding: 10px;'>" +
-                // "<div id='" + this.treemap_container_id + "'></div>" +
                 "<div style='display: table; margin-top: 20px;'>" +
                 "<div style='width: 80%; float: left;padding: 10px;'>" +
                 "<div id='" + this.treemap_container_id + "'></div>" +
@@ -190,7 +170,6 @@ define([
                 };
                 console.log("query", query_text);
                 abstract.free_text_query = data_obj['free_text_query'];
-                // console.log(abstract.num_docs, abstract.num_clusters);
                 var postArgs = {
 
                     data: json.stringify(data_obj),
@@ -265,7 +244,6 @@ define([
             d3.select("#" + this.container_id).select("#num_clusters")
                 .on("change", function(_d) {
                     abstract.num_clusters = d3.select(this).property("value");
-                    // console.log(abstract.num_clusters);
                 });
             //start or end of study
             d3.select("#" + this.container_id)
@@ -302,8 +280,6 @@ define([
                 .append("div")
                 .attr('id', 'rendering')
                 .html("<img src='img/hourglass_spinner.svg'>");
-                // .style('display', "none")
-                // .attr('height', '30').attr('width', '30');
 
             // advanced version or baseline version
             d3.select("#" + this.container_id)
@@ -337,8 +313,6 @@ define([
         // Update with new data
         update(update_data) {
             console.log("update_data");
-
-            //dijit.byId( 'filter_by_concepts' ).destroy( true );
 
             let abstract = this;
             if (this.initiated == true) {
@@ -407,11 +381,6 @@ define([
             // rerender, so remove previous version
             d3.select("#" + this.treemap_container_id).selectAll("*").remove();
             d3.select("#" + abstract.summary_container_id).selectAll("div").remove();
-            // d3.select("#" + this.cluster_view_id).selectAll("*").remove();
-            // let type = typeof this.cluster_view;
-            // console.log("cluster view type", type);
-            // if (typeof this.cluster_view === 'object') delete this.cluster_view;
-            // console.log("cluster view type", type);
             if (this.v_baseline) {
                 this.cluster_view = new ClusterViewBaseline(this.cluster_view_id);
             }
@@ -578,9 +547,7 @@ define([
                     "keyword_view_list": data["intersect_cluster"]['concepts'],
                     "concept_list": abstract.concept_list,
                 }
-                // console.log("keywordinfo", keyword_info["keyword_view_list"]);
                 abstract.keyword_view.render(keyword_info);
-                // abstract.keyword_view(data["intersect_cluster"]);
 
             }, function (err) {
                 error_num+=1;
@@ -628,7 +595,6 @@ define([
                 const duration = (performance.now() - startTime)/1000;
                 console.log(`update time took ${duration}s`);
                 data['solr_results'] = solr_results;
-                // console.assert(data['solr_results']['response']['docs']===solr_results['response']['docs']);
                 abstract.clusters = data['clusters'];
                 abstract.must_exclude = data['must_exclude'];
                 abstract.exclude_info = data['exclude_info'];
@@ -809,7 +775,6 @@ define([
                     var abs_full=JSON.stringify(docs[k]['abstract'][0].slice(0)).replace(/\\n/g, '<br><br>');
                     var abs_short = JSON.stringify(docs[k]['abstract'][0].slice(0, 100));
                     var abs_spans=docs[k]['abstract_spans'];
-                    // console.log("abstract_span", abs_spans);
                     abs_full=abstract.highlight_entity(abs_full,abs_spans);
                     abs_short=abstract.highlight_entity(abs_short,abs_spans) + "......";
                     var text=[abs_full,abs_short];
@@ -821,11 +786,9 @@ define([
                 // generate text and labels
                 for (let k in abstract.current_page_docs) {
                     let url = "https://pubmed.ncbi.nlm.nih.gov/" + docs[k]['pmid'] + "/";
-                    // console.log("url", url);
                     let text = highlighted_docs[k][1];
                     let button_text = "Expand";
                     if (abstract.selected_clusters.length > 1 && parseInt(k)===0) {
-                        // console.log("auto expand");
                         text = highlighted_docs[k][0];
                         button_text = "  Collapse";
                     }
@@ -833,7 +796,6 @@ define([
                     html += '<span class="title" style="font-weight: bold; font-size:15px;">' + highlighted_titles[k] + '</span>';
                     html += '<a  target = "_blank" href="' + url + '" style="text-decoration: none"> <i class= "fa fa-chain"></i> </a>'
                     html += '<i class= "fa fa-files-o"></i>';
-                    // html += '<a  target = "_blank" href="' + url + '" style="text-decoration: none"><span class="title" style="font-weight: bold; font-size:15px;">' + title + '</span></a>';
                     html += "<div style='padding-bottom: 10px;padding-top: 5px'><span class='abstract' >"+text+'</span>';
                     html += "<span class='toggleButton' style='cursor: pointer;font-weight: bold;'>" + button_text + "</span></div>";
                     let doc_div = d3.select("#" + abstract.list_container_id)
@@ -906,7 +868,6 @@ define([
                     d3.select(this)
                         .selectAll('.cui')
                         .on('mouseover', function(cd, ci) {
-                            // console.log(abstract.concept_list);
                             d3.select(this).style("background", "yellow");
                             let action_args = {"type": "mouseover", "source_view": "doc_list", "cid": spans[ci]['cui_list']};
                             abstract.update_actions(action_args);
@@ -938,7 +899,7 @@ define([
                         .on('contextmenu', function(cd, ci) {
                             d3.event.preventDefault();
                             let mention = d3.select(this).text();
-                            abstract.context_menu.style('left', d3.event.pageX).style('top', d3.event.pageY).classed('visible',true);
+                            abstract.context_menu.style('left', d3.event.pageX + "px").style('top', d3.event.pageY + "px").classed('visible',true);
                             abstract.context_menu.selectAll('div').on('click', function(d) {
                                 if (d3.select(this).text()==="Search on Google") {
                                     let search_url = "https://www.google.com/search?q=" + mention;
@@ -1018,13 +979,6 @@ define([
                     if ('color' in item) color = item['color'];
                     if ('cui_list' in item) text.splice(span[0]+count, 0, "<span class='cui' style='color: " + color +";'>");
                     else text.splice(span[0]+count, 0, "<span style='color: " + color +";'>");
-                    // if ('color' in item) {
-                    //
-                    //     // console.log("has color");
-                    //     //" + item['color'] +"
-                    //     text.splice(span[0]+count, 0, ("<span style='color: " + item['color'] +";'>"));
-                    // }
-                    // else text.splice(span[0]+count, 0, "<span class='cui' style='color: rgb(47, 187, 171);'>");
                     count+=1;
                     text.splice(span[1]+1+count,0,"</span>");
                     count+=1;
@@ -1051,7 +1005,6 @@ define([
             xhr("http://" + this.host + ":8985/search/query", postArgs).then(function (data) {
                 const duration = (performance.now() - startTime)/1000;
                 console.log(`update time took ${duration}s`);
-                // console.log(data);
                 if (data['solr_results']['response']['docs'].length == 0) {
                     dom.byId(abstract.list_container_id).innerHTML = "There is no relevant abstracts";
                 } else {

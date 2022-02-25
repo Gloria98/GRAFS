@@ -157,26 +157,5 @@ def process_cluster_concept_one(solr_results, clusters, top_k, global_concepts, 
     intersect_cluster['concepts'] = concepts_dict
     return intersect_cluster
 
-    
-
-
-# def process_cluster_concept2(all_concepts, all_clusters, top_k):
-#     for cluster in all_clusters:
-#         cl_pmids = set(cluster['pmids'])
-#         cl_concepts = {}
-#         for cui, content in all_concepts.items():
-#             co_pmids = set(content['pmids'])
-#             df = len(co_pmids)
-#             intercet = (cl_pmids & co_pmids)
-#             if len(intercet) != 0:
-#                 cl_concepts[cui] = {"count": len(intercet), "text": content['mentions'][0], "df": df, "score": float(len(intercet)/df)}
-#         sorted_concepts = dict(sorted(cl_concepts.items(), key=lambda item: item[1]['score'], reverse = True))
-#         concepts_dict = {}
-#         for cui, content in sorted_concepts.items():
-#             concepts_dict[cui] = content['text']
-#             if len(concepts_dict)==top_k:
-#                 break
-#         cluster['concepts'] = concepts_dict
-#     return all_clusters
 
 
